@@ -1,87 +1,14 @@
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { ArrowRightIcon } from 'lucide-react';
-interface ProjectMetric {
-  value: string;
-  label: string;
-}
-interface Project {
-  id: string;
-  title: string;
-  tags: string[];
-  description: string;
-  metrics: ProjectMetric[];
-}
-const projects: Project[] = [
-{
-  id: 'wealth-platform',
-  title: 'Private Wealth Management Platform',
-  tags: ['FinTech', 'Security', 'Scale'],
-  description:
-  'End-to-end wealth management platform with real-time portfolio analytics, encrypted client communications, and institutional-grade security. Designed for discretion, built for performance.',
-  metrics: [
-  {
-    value: '10,000+',
-    label: 'Active Users'
-  },
-  {
-    value: '99.99%',
-    label: 'Uptime'
-  },
-  {
-    value: '$500M+',
-    label: 'AUM Managed'
-  }]
-
-},
-{
-  id: 'payment-infrastructure',
-  title: 'Global Payment Infrastructure',
-  tags: ['Payments', 'Architecture', 'Compliance'],
-  description:
-  'Multi-currency payment orchestration layer handling complex routing, fraud detection, and regulatory compliance across jurisdictions. Built to the highest standards of financial infrastructure.',
-  metrics: [
-  {
-    value: '150+',
-    label: 'Countries'
-  },
-  {
-    value: '$2B+',
-    label: 'Processed'
-  },
-  {
-    value: 'PCI DSS',
-    label: 'Level 1'
-  }]
-
-},
-{
-  id: 'automation-suite',
-  title: 'Enterprise Automation Suite',
-  tags: ['AI', 'Automation', 'Efficiency'],
-  description:
-  'AI-powered workflow automation connecting disparate enterprise systems, eliminating operational bottlenecks and compounding efficiency gains across the entire organization.',
-  metrics: [
-  {
-    value: '80%',
-    label: 'Manual Work Eliminated'
-  },
-  {
-    value: '12',
-    label: 'Integrated Systems'
-  },
-  {
-    value: '6-Figure',
-    label: 'Annual Savings'
-  }]
-
-}];
-
+import { useNavigate } from 'react-router-dom';
+import { PROJECTS } from '../data/projects';
 interface ProjectCardProps {
-  project: Project;
+  project: (typeof PROJECTS)[number];
   index: number;
 }
 function ProjectCard({ project, index }: ProjectCardProps) {
+  const navigate = useNavigate();
   return (
     <motion.article
       initial={{
@@ -157,23 +84,26 @@ function ProjectCard({ project, index }: ProjectCardProps) {
               color: 'var(--text-secondary)'
             }}>
 
-            {project.description}
+            {project.shortDescription}
           </p>
 
           {/* View Case Study link */}
           <div className="mt-2">
-            <span
+            <button
+              onClick={() => navigate(`/work/${project.slug}`)}
               className="inline-flex items-center gap-2 font-body text-xs uppercase transition-all duration-300 group-hover:gap-3"
               style={{
                 color: 'var(--accent-gold)',
-                letterSpacing: '0.15em'
+                letterSpacing: '0.15em',
+                background: 'none',
+                border: 'none',
+                padding: 0
               }}
-              role="presentation"
-              aria-hidden="true">
+              aria-label={`View case study for ${project.title}`}>
 
               View Case Study
               <ArrowRightIcon size={12} />
-            </span>
+            </button>
           </div>
         </div>
 
@@ -282,8 +212,8 @@ export function Projects() {
             backgroundColor: 'var(--border-subtle)'
           }}>
 
-          {projects.map((project, i) =>
-          <ProjectCard key={project.id} project={project} index={i} />
+          {PROJECTS.map((project, i) =>
+          <ProjectCard key={project.slug} project={project} index={i} />
           )}
         </div>
       </div>

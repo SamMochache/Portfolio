@@ -3,7 +3,7 @@ import { motion, useInView } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
 const stats = [
 {
-  value: '6+',
+  value: '12+',
   label: 'Years of Practice'
 },
 {
@@ -11,7 +11,7 @@ const stats = [
   label: 'Systems Built'
 },
 {
-  value: '$60M+',
+  value: '$2B+',
   label: 'Processed'
 },
 {

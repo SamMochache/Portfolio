@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SunIcon, MoonIcon, MenuIcon, XIcon } from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 const navLinks = [
 {
@@ -28,6 +29,8 @@ export function Navigation() {
   const { theme, toggleTheme } = useTheme();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll, {
@@ -37,11 +40,35 @@ export function Navigation() {
   }, []);
   function handleNavClick(href: string) {
     setMobileOpen(false);
-    const el = document.querySelector(href);
-    if (el)
-    el.scrollIntoView({
-      behavior: 'smooth'
-    });
+    const sectionId = href.replace('#', '');
+    if (location.pathname !== '/') {
+      // Navigate home first, then scroll after mount
+      navigate('/');
+      setTimeout(() => {
+        const el = document.getElementById(sectionId);
+        if (el)
+        el.scrollIntoView({
+          behavior: 'smooth'
+        });
+      }, 150);
+    } else {
+      const el = document.getElementById(sectionId);
+      if (el)
+      el.scrollIntoView({
+        behavior: 'smooth'
+      });
+    }
+  }
+  function handleLogoClick() {
+    setMobileOpen(false);
+    if (location.pathname !== '/') {
+      navigate('/');
+    } else {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
   }
   return (
     <>
@@ -69,42 +96,30 @@ export function Navigation() {
           '1px solid transparent',
           backdropFilter: scrolled ? 'blur(12px)' : 'none',
           WebkitBackdropFilter: scrolled ? 'blur(12px)' : 'none',
-          transition:
-          'background-color 0.4s ease, border-color 0.4s ease, backdrop-filter 0.4s ease'
+          transition: 'background-color 0.4s ease, border-color 0.4s ease'
         }}>
 
         <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16">
           <div className="flex items-center justify-between h-16 md:h-20">
             {/* Monogram */}
-            <a
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                window.scrollTo({
-                  top: 0,
-                  behavior: 'smooth'
-                });
-              }}
-              className="font-heading text-xl font-light tracking-[0.15em]"
+            <button
+              onClick={handleLogoClick}
+              className="font-heading text-xl font-light tracking-[0.15em] bg-transparent border-none p-0"
               style={{
                 color: 'var(--accent-gold)'
               }}
               aria-label="Return to top">
 
               A.R.
-            </a>
+            </button>
 
             {/* Desktop Nav Links */}
             <div className="hidden md:flex items-center gap-8 lg:gap-10">
               {navLinks.map((link) =>
-              <a
+              <button
                 key={link.href}
-                href={link.href}
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleNavClick(link.href);
-                }}
-                className="font-body text-xs uppercase tracking-[0.25em] transition-colors duration-300"
+                onClick={() => handleNavClick(link.href)}
+                className="font-body text-xs uppercase tracking-[0.25em] transition-colors duration-300 bg-transparent border-none p-0"
                 style={{
                   color: 'var(--text-secondary)'
                 }}
@@ -116,7 +131,7 @@ export function Navigation() {
                 }>
 
                   {link.label}
-                </a>
+                </button>
               )}
             </div>
 
@@ -268,14 +283,10 @@ export function Navigation() {
 
             <nav className="flex flex-col items-center gap-8">
               {navLinks.map((link, i) =>
-            <motion.a
+            <motion.button
               key={link.href}
-              href={link.href}
-              onClick={(e) => {
-                e.preventDefault();
-                handleNavClick(link.href);
-              }}
-              className="font-heading text-3xl font-light"
+              onClick={() => handleNavClick(link.href)}
+              className="font-heading text-3xl font-light bg-transparent border-none"
               style={{
                 color: 'var(--text-primary)'
               }}
@@ -293,7 +304,7 @@ export function Navigation() {
               }}>
 
                   {link.label}
-                </motion.a>
+                </motion.button>
             )}
             </nav>
           </motion.div>
