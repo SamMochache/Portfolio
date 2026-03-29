@@ -11,7 +11,7 @@ const stats = [
   label: 'Systems Built'
 },
 {
-  value: '$2B+',
+  value: '$1B+',
   label: 'Processed'
 },
 {
