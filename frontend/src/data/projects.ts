@@ -68,7 +68,7 @@ export const PROJECTS: Project[] = [
   'Multi-currency payment orchestration layer handling complex routing, fraud detection, and regulatory compliance across jurisdictions.',
   metrics: [
   { value: '150+', label: 'Countries' },
-  { value: '$2B+', label: 'Processed' },
+  { value: '$800M+', label: 'Processed' },
   { value: 'PCI DSS', label: 'Level 1' }],
 
   overview:
@@ -86,7 +86,7 @@ export const PROJECTS: Project[] = [
   'Real-time FX rate engine with hedging support'],
 
   results: [
-  { value: '$2B+', label: 'Total Processed' },
+  { value: '$800M+', label: 'Total Processed' },
   { value: '99.97%', label: 'Authorization Rate' },
   { value: '<800ms', label: 'Global P99 Latency' },
   { value: '0', label: 'Compliance Violations' }],
